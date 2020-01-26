@@ -48,6 +48,7 @@ public class Client {
         return Encrypt.cifrarTexto(fullCode);
     }
     public void login(final CallbackReceiver callback, User loginData) throws Exception {
+        Logger.getAnonymousLogger().severe("Login");
         try {
             loginData.setPassword(Encrypt.cifrarTexto(loginData.getPassword()));
             Call<Session> call =  service.login(loginData);
@@ -80,10 +81,11 @@ public class Client {
         }
     }
 
-    public void registerUser(final CallbackReceiver callback, User loginData) throws Exception {
+    public void registerUser(final CallbackReceiver callback, User user) throws Exception {
+        Logger.getAnonymousLogger().severe("Resgister");
         try {
-            loginData.setPassword(Encrypt.cifrarTexto(loginData.getPassword()));
-            Call<Void> call =  service.createUser(loginData);
+            user.setPassword(Encrypt.cifrarTexto(user.getPassword()));
+            Call<Void> call =  service.createUser(user);
 
             call.enqueue(new Callback<Void>() {
                 @Override

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -181,12 +182,14 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, C
             try {
                 Client client = new Client();
                 user.setPassword(password.getText().toString());
+                Logger.getAnonymousLogger().severe(user.getLogin() + " " + user.getPassword());
                 client.login(this, user);
             } catch (Exception e){
                 Toast.makeText(this, "Error: Cannot login with the new user", Toast.LENGTH_LONG).show();
                 blockControls(false);
             }
         } else if (response.body().getClass().equals(Session.class)) {
+            Logger.getAnonymousLogger().severe(((Session) response.body()).toString());
             User user = ((Session) response.body()).getLogged();
             blockControls(false);
             /*Intent intent = new Intent(this, MainMenu.class);
