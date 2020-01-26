@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (response.body().getClass().equals(Session.class)) {
             User user;
             user = ((Session)response.body()).getLogged();
-            Toast.makeText(this, "User: " + user.getFullName(),Toast.LENGTH_LONG).show();
             blockControls(false);
             tfLogin.setText("");
             pfPassword.setText("");

@@ -1,16 +1,13 @@
 package com.example.routeapp_android.control;
 
-import android.widget.Toast;
 
 import com.example.routeapp_android.encryption.Encrypt;
 import com.example.routeapp_android.model.Session;
 import com.example.routeapp_android.model.User;
 
 
-import java.io.IOException;
 import java.sql.Time;
 import java.time.Instant;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -24,7 +21,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class Client {
     private static final String SERVER_URL = "http://192.168.0.2:8080/RouteApp_Server/webresources/";
-    private String code;
+    private static String code;
     private ClientService service;
 
     public void setCode(String code) {

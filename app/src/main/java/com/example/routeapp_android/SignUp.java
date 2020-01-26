@@ -187,9 +187,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, C
                 blockControls(false);
             }
         } else if (response.body().getClass().equals(Session.class)) {
-            User user;
-            user = ((Session) response.body()).getLogged();
-            Toast.makeText(this, "User: " + user.getId(), Toast.LENGTH_LONG).show();
+            User user = ((Session) response.body()).getLogged();
             blockControls(false);
             /*Intent intent = new Intent(this, MainMenu.class);
             intent.putExtra("USER", user);
