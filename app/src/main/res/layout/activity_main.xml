@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1f1f1f"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/tfLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="192dp"
+        android:backgroundTint="@android:color/background_light"
+        android:ems="10"
+        android:hint="@string/loginHint"
+        android:inputType="textPersonName"
+        android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:maxLength="50"/>
+
+    <EditText
+        android:id="@+id/pfPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:backgroundTint="@android:color/background_light"
+        android:ems="10"
+        android:hint="@string/passwordHint"
+        android:inputType="textPassword"
+        android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tfLogin"
+        android:maxLength="200"/>
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="80dp"
+        android:background=" #332f2c"
+        android:text="@string/buttonLogin"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pfPassword" />
+
+    <Button
+        android:id="@+id/btnSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="80dp"
+        android:background=" #332f2c"
+        android:text="@string/buttonSignUp"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pfPassword" />
+
+    <Button
+        android:id="@+id/btnRestore"
+        android:layout_width="166dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="164dp"
+        android:background=" #332f2c"
+        android:text="@string/btnRestore"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintEnd_toStartOf="@+id/btnLogin"
+        app:layout_constraintStart_toEndOf="@+id/btnSignUp"
+        app:layout_constraintTop_toBottomOf="@+id/pfPassword" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="202dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="12dp"
+        android:buttonTint="@android:color/background_light"
+        android:text="@string/cbRemember"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintEnd_toEndOf="@+id/pfPassword"
+        app:layout_constraintStart_toStartOf="@+id/pfPassword"
+        app:layout_constraintTop_toBottomOf="@+id/pfPassword" />
+</androidx.constraintlayout.widget.ConstraintLayout>

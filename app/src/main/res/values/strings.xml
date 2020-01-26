@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Login</string>
+    <string name="loginHint">Login</string>
+    <string name="passwordHint">Password</string>
+    <string name="buttonSignUp">Sign Up</string>
+    <string name="buttonLogin">Login</string>
+    <string name="tvFullName">Full Name:</string>
+    <string name="tvEmail">E-mail:</string>
+    <string name="tvLogin">Login:</string>
+    <string name="tvPassword">Password:</string>
+    <string name="tvConfirm">Confirm Password:</string>
+    <string name="btnBack">Back</string>
+    <string name="btnUndo">Undo</string>
+    <string name="btnRedo">Redo</string>
+    <string name="fullNameHint">Sarah Smith Summers</string>
+    <string name="emailHint">sarah.smith@email.com</string>
+    <string name="registerLoginHint">Sarah24Smith</string>
+    <string name="confirmHint">Repeat the password</string>
+    <string name="greeting">Welcome,</string>
+    <string name="btnLogOut">Log Out</string>
+    <string name="btnRestore">Restore Password</string>
+    <string name="cbRemember">Remember Me</string>
+</resources>
