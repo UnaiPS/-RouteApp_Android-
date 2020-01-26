@@ -58,10 +58,9 @@ public class Client {
             call.enqueue(new Callback<Session>() {
                 @Override
                 public void onResponse(Call<Session> call, Response<Session> response) {
-                    Logger.getAnonymousLogger().severe("Algo ha ido.");
                     try {
                         if(response.isSuccessful()) {
-                            Logger.getAnonymousLogger().severe(response.body().toString());
+                            setCode(response.body().getCode());
                             callback.onSuccess(response);
                         }  else {
                             callback.onError(new Exception ("Error trying to connect. HTTP code: " + response.code()));
@@ -73,8 +72,6 @@ public class Client {
 
                 @Override
                 public void onFailure(Call<Session> call, Throwable t) {
-                    Logger.getAnonymousLogger().severe("Algo no ha ido.");
-                    Logger.getAnonymousLogger().severe(t.getLocalizedMessage());
                     callback.onError(t);
 
                 }
@@ -94,7 +91,6 @@ public class Client {
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
-                    Logger.getAnonymousLogger().severe("Algo ha ido.");
                     try {
                         if(response.isSuccessful()) {
                             callback.onSuccess(response);
@@ -108,8 +104,6 @@ public class Client {
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Logger.getAnonymousLogger().severe("Algo no ha ido.");
-                    Logger.getAnonymousLogger().severe(t.getLocalizedMessage());
                     callback.onError(t);
 
                 }
