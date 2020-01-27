@@ -45,7 +45,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
             //row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
             row.setBackgroundColor(Color.parseColor("#DAE8FC"));
             button = new Button(this);
-            button.setText("GPS");
+            button.setText("Set GPS coords");
             button.setId(i);
             button.setOnClickListener(this);
             button.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -74,12 +74,15 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
+        Button buttonDisable;
         if (v.getId()== end.getId()){
             Toast.makeText(this,"Pressed end button",Toast.LENGTH_SHORT).show();
         }else if(v.getId()==start.getId()){
             Toast.makeText(this,"Pressed start button",Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(this,"You pressed the button of the table"+v.getId(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"You pressed the button of the row"+v.getId(),Toast.LENGTH_SHORT).show();
+            buttonDisable=(Button)findViewById(v.getId());
+            buttonDisable.setEnabled(false);
         }
     }
 }
