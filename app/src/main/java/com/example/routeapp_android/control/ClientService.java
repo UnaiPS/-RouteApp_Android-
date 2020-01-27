@@ -31,55 +31,71 @@ public interface ClientService {
 
     //Route Client
 
+    @Headers("Accept: application/json")
     @POST("routeappjpa.route/{code}")
     Call<Void> createRoute(@Body FullRoute fullRoute, @Path("code") String code);
 
+    @Headers("Accept: application/json")
     @PUT("routeappjpa.route/{code}")
     Call<Void> editRoute(@Body FullRoute fullRoute, @Path("code") String code);
 
+    @Headers("Accept: application/json")
     @GET("routeappjpa.route/{code}/{id}")
     Call<Route> findRoute(@Path("id") String routeId, @Path("code") String code);
 
+    @Headers("Accept: application/json")
     @GET("routeappjpa.route/{code}")
     Call<List<Route>> findAllRoutes(@Path("code") String code);
 
+    @Headers("Accept: application/json")
     @GET("routeappjpa.route/assignedTo/{code}/{id}")
     Call<List<Route>> findRoutesByAssignedTo(@Path("id") String userId, @Path("code") String code);
 
+    @Headers("Accept: application/json")
     @DELETE("routeappjpa.route/{code}/{id}")
     Call<Void> removeRoute(@Path("id") String routeId, @Path("code") String code);
 
     //Coordinate Client
 
+    @Headers("Accept: application/json")
     @GET("routeappjpa.coordinate/direction/type/{code}/{type}")
     Call<List<Direction>> findDirectionsByType(@Path("type") String type, @Path("code") String code);
 
+    @Headers("Accept: application/json")
     @GET("routeappjpa.coordinate/direction/route/{code}/{route}")
-    Call<List<Direction>> findDirectionsByRoute(@Path("id") String routeId, @Path("code") String code);
+    Call<List<Direction>> findDirectionsByRoute(@Path("route") String routeId, @Path("code") String code);
 
+    @Headers("Accept: application/json")
     @PUT("routeappjpa.coordinate/direction/visited/{code}/{latitude}/{longitude}")
     Call<Void> markDestinationAsVisited(@Path("latitude") Double latitude, @Path("longitude") Double longitude, @Body Coordinate_Route visitedDestination, @Path("code") String code);
 
     //User Client
 
+    @Headers("Accept: application/json")
     @POST("routeappjpa.user")
     Call<Void> createUser(@Body User user);
 
+    @Headers("Accept: application/json")
     @PUT("routeappjpa.user/{code}")
     Call<Void> editUser(@Body User user, @Path("code") String code);
 
+    @Headers("Accept: application/json")
     @GET("routeappjpa.user/{code}/{id}")
     Call<User> findUser(@Path("id") String userId, @Path("code") String code);
 
+    @Headers("Accept: application/json")
     @GET("routeappjpa.user/{code}")
     Call<List<User>> findAllUsers(@Path("code") String code);
 
+    @Headers("Accept: application/json")
     @GET("routeappjpa.user/{code}/{login}")
     Call<User> findUserByLogin(@Path("login") String userLogin, @Path("code") String code);
 
+    @Headers("Accept: application/json")
     @GET("routeappjpa.user/{code}/{privilege}")
     Call<List<User>> findUsersByPrivilege(@Path("privilege") String privilege, @Path("code") String code);
 
+    @Headers("Accept: application/json")
     @DELETE("routeappjpa.user/{code}/{id}")
     Call<Void> removeUser(@Path("id") String userId, @Path("code") String code);
 
@@ -87,9 +103,11 @@ public interface ClientService {
     @POST("routeappjpa.user/login")
     Call<Session> login(@Body User user);
 
+    @Headers("Accept: application/json")
     @GET("routeappjpa.user/forgottenpasswd/{login}/{email}")
     Call<Void> forgottenPassword(@Body User userData);
 
+    @Headers("Accept: application/json")
     @POST("routeappjpa.user/email/{code}")
     Call<String> emailConfirmation(@Body User user, @Path("code") String code);
 }

@@ -157,10 +157,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (user.getPrivilege().equals(Privilege.USER)) {
                 tfLogin.setText("");
                 pfPassword.setText("");
-                /*Intent intent = new Intent(this, MainMenu.class);
-                intent.putExtra("USER", user);
+                Intent intent = new Intent(this, RouteInfoActivity.class);
+                //intent.putExtra("USER", user);
                 setResult(RESULT_OK, intent);
-                startActivity(intent);*/
+                startActivity(intent);
             } else {
                 Toast.makeText(this, "Admin users can only log in the desktop version of the app.",Toast.LENGTH_LONG).show();
             }
