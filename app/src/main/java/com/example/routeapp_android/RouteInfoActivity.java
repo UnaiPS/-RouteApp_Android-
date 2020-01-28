@@ -1,8 +1,10 @@
 package com.example.routeapp_android;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -55,7 +57,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
     private Client client = new Client();
     //Crear coordenadas a partir de GPS del dispositivo
     private FusedLocationProviderClient fusedLocationClient;
-    private static Coordinate_Route temporalCoordRoute;
+    private static Coordinate_Route temporalCoordRoute = new Coordinate_Route();
 
 
 
@@ -124,20 +126,30 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
             Toast.makeText(this,"You pressed the button of the row with the id"+v.getId(),Toast.LENGTH_SHORT).show();
             buttonDisable=(Button)findViewById(v.getId());
             buttonDisable.setEnabled(false);
+            Logger.getAnonymousLogger().severe("The coordinates are: "+route.getCoordinates().toString());
+            Logger.getAnonymousLogger().severe("Button id is: "+buttonDisable.getId());
+
             for(Coordinate_Route coor_rout: route.getCoordinates()){
-                if(coor_rout.getCoordinate().getId().equals(v.getId())){
+                if(coor_rout.getCoordinate().getId() == v.getId()){
                     temporalCoordRoute=coor_rout;
                 }
             }
-            if(!temporalCoordRoute.equals(null)){
+            Logger.getAnonymousLogger().severe(temporalCoordRoute.toString());
+            if(temporalCoordRoute != null){
+                Logger.getAnonymousLogger().severe("Entra en el if");
                 CallbackReceiver callback = this;
                 Context context = this;
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Logger.getAnonymousLogger().severe("No permission");
+                }
                 fusedLocationClient.getLastLocation()
-                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        .addOnSuccessListener(new OnSuccessListener<Location>() {
                             @Override
                             public void onSuccess(Location location) {
                                 // Got last known location. In some rare situations this can be null.
+                                Logger.getAnonymousLogger().severe("Ha llegado al principio");
                                 if (location != null) {
+                                    Logger.getAnonymousLogger().severe("Location no es null");
                                     // Logic to handle location object
                                     Coordinate coordinate = new Coordinate();
                                     coordinate.setLatitude(location.getLatitude());
@@ -150,6 +162,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                                     }
 
                                 }else{
+                                    Logger.getAnonymousLogger().severe("Location es null");
                                     Toast.makeText(context,"Please, enable your GPS and try again",Toast.LENGTH_LONG).show();
                                 }
                             }
