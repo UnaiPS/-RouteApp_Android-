@@ -34,7 +34,6 @@ public class Client {
     }
 
     public Client() {
-
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.callTimeout(3, TimeUnit.SECONDS);
         httpClient.connectTimeout(3, TimeUnit.SECONDS);
@@ -257,6 +256,7 @@ public class Client {
                     try {
                         if(response.isSuccessful()) {
                             setCode(response.body().getCode());
+                            Logger.getAnonymousLogger().severe(response.body().getCode());
                             callback.onSuccess(response);
                         }  else {
                             callback.onError(new Exception ("Error trying to connect. HTTP code: " + response.code()));
