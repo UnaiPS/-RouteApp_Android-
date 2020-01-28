@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MediaPlayer mp;
 
 
+
     /**
      * Initializes the Activity
      */
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pfPassword = (EditText) findViewById(R.id.pfPassword);
             mp = MediaPlayer.create(this, R.raw.button);
             KeyReader.setKeyResource(getResources().openRawResource(R.raw.publickey));
+            Client.setServerURL(getResources().getString(R.string.serverIp), getResources().getString(R.string.serverPort));
         } catch (Exception ex) {
             Logger.getAnonymousLogger().severe("Fatal error in startup.");
             finish();
