@@ -2,7 +2,9 @@ package com.example.routeapp_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.Layout;
@@ -18,10 +20,14 @@ import android.widget.Toast;
 
 import com.example.routeapp_android.control.CallbackReceiver;
 import com.example.routeapp_android.control.Client;
+import com.example.routeapp_android.model.Coordinate;
 import com.example.routeapp_android.model.Coordinate_Route;
 import com.example.routeapp_android.model.Direction;
 import com.example.routeapp_android.model.Route;
 import com.example.routeapp_android.model.Type;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,6 +53,11 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
     private TextView totalDistance;
     private TextView origin;
     private Client client = new Client();
+    //Crear coordenadas a partir de GPS del dispositivo
+    private FusedLocationProviderClient fusedLocationClient;
+    private static Coordinate_Route temporalCoordRoute;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +71,8 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         estimatedTime = (TextView)findViewById(R.id.estimatedTimeText);
         totalDistance = (TextView)findViewById(R.id.totalDistanceText);
         origin = (TextView)findViewById(R.id.originText);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         try{
             client.findRouteById(this,"7");
         }catch(Exception e) {
@@ -73,17 +86,28 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         Button buttonDisable;
         if (v.getId()== end.getId()){
             Toast.makeText(this,"Pressed end button",Toast.LENGTH_SHORT).show();
-            route.setCoordinates(null);
-            route.setEnded(true);
-            buttonDisable = (Button)findViewById(R.id.btnEnd);
-            try{
-                buttonDisable.setEnabled(false);
-                client.editRoute(this,route);
-            }catch (Exception e){
-                buttonDisable.setEnabled(true);
-                Toast.makeText(this,"Something went wrong",Toast.LENGTH_SHORT).show();
-            }
 
+            buttonDisable = (Button)findViewById(R.id.btnEnd);
+            boolean isAllCoordsVisited = true;
+            for(Coordinate_Route coordinate_route: route.getCoordinates()){
+                if(coordinate_route.getVisited()==null && coordinate_route.getOrder()!=1){
+                    isAllCoordsVisited=false;
+                    break;
+                }
+            }
+            if(isAllCoordsVisited==true){
+                route.setCoordinates(null);
+                route.setEnded(true);
+                try{
+                    buttonDisable.setEnabled(false);
+                    client.editRoute(this,route);
+                }catch (Exception e){
+                    buttonDisable.setEnabled(true);
+                    Toast.makeText(this,"Something went wrong",Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Toast.makeText(this,"All destinations must be visited",Toast.LENGTH_LONG).show();
+            }
         }else if(v.getId()==start.getId()){
             Toast.makeText(this,"Pressed start button",Toast.LENGTH_SHORT).show();
             route.setCoordinates(null);
@@ -100,6 +124,43 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
             Toast.makeText(this,"You pressed the button of the row with the id"+v.getId(),Toast.LENGTH_SHORT).show();
             buttonDisable=(Button)findViewById(v.getId());
             buttonDisable.setEnabled(false);
+            for(Coordinate_Route coor_rout: route.getCoordinates()){
+                if(coor_rout.getCoordinate().getId().equals(v.getId())){
+                    temporalCoordRoute=coor_rout;
+                }
+            }
+            if(!temporalCoordRoute.equals(null)){
+                CallbackReceiver callback = this;
+                Context context = this;
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                // Got last known location. In some rare situations this can be null.
+                                if (location != null) {
+                                    // Logic to handle location object
+                                    Coordinate coordinate = new Coordinate();
+                                    coordinate.setLatitude(location.getLatitude());
+                                    coordinate.setLongitude(location.getLongitude());
+                                    coordinate.setType(Type.GPS);
+                                    try{
+                                        client.markDestinationAsVisited(callback,coordinate,temporalCoordRoute);
+                                    }catch (Exception e){
+
+                                    }
+
+                                }else{
+                                    Toast.makeText(context,"Please, enable your GPS and try again",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+            }else{
+                Toast.makeText(this,"Something went wrong, try again later",Toast.LENGTH_LONG).show();
+                buttonDisable.setEnabled(true);
+            }
+
+
+            //client.markDestinationAsVisited(this,);
         }
     }
 
