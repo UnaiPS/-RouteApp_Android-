@@ -23,7 +23,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class Client {
-    private static final String SERVER_URL = "http://192.168.21.10:8080/RouteApp_Server/webresources/";
+    private static final String SERVER_URL = "http://192.168.21.49:8080/RouteApp_Server/webresources/";
     private static String code;
     private ClientService service;
 

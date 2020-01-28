@@ -40,7 +40,12 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
     private Button start;
     private ImageView image;
     private Route route;
-    private List<Direction> directions;
+    private ArrayList <Direction> directions;
+    private TextView name;
+    private TextView createdBy;
+    private TextView estimatedTime;
+    private TextView totalDistance;
+    private TextView origin;
     private Client client = new Client();
 
     @Override
@@ -50,8 +55,13 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
         tableLayout = (TableLayout) findViewById(R.id.destinationsTableLayout);
         image = (ImageView)findViewById(R.id.routeImage);
+        name = (TextView)findViewById(R.id.routeNameText);
+        createdBy = (TextView)findViewById(R.id.createdByText);
+        estimatedTime = (TextView)findViewById(R.id.estimatedTimeText);
+        totalDistance = (TextView)findViewById(R.id.totalDistanceText);
+        origin = (TextView)findViewById(R.id.originText);
         try{
-            client.findRouteById(this,"1");
+            client.findRouteById(this,"7");
         }catch(Exception e) {
 
         }
@@ -66,7 +76,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         }else if(v.getId()==start.getId()){
             Toast.makeText(this,"Pressed start button",Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(this,"You pressed the button of the row"+v.getId(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"You pressed the button of the row with the id"+v.getId(),Toast.LENGTH_SHORT).show();
             buttonDisable=(Button)findViewById(v.getId());
             buttonDisable.setEnabled(false);
         }
@@ -86,7 +96,8 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
         }else{
             Logger.getAnonymousLogger().severe("Va a coger las direcciones");
-            directions.addAll((ArrayList<Direction>)response.body());
+            directions = (ArrayList<Direction>)response.body();
+            //directions.addAll((ArrayList<Direction>)response.body());
             Logger.getAnonymousLogger().severe("Hay "+directions.size()+" direcciones");
             onActivityShowing();
         }
@@ -100,13 +111,34 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
     private void onActivityShowing(){
         Logger.getAnonymousLogger().severe("Ha llegado aqui"+route.getName());
-        String imageUrl = "https://image.maps.api.here.com/mia/1.6/routing?app_id=w4M9GIVbS5uVCLiCyGKV&app_code=JOPGDZHGQJ7FpUVmbfm4KA&waypoint0=43.3168342,-2.982215&waypoint1=43.3073,-2.974&w=400&h=400";
-        Picasso.get().load(imageUrl).into(image);
+        Logger.getAnonymousLogger().severe("Drawing the map");
+        drawMap();
+        Logger.getAnonymousLogger().severe(route.getCoordinates().toString());
+        Logger.getAnonymousLogger().severe("The size is :"+route.getCoordinates().size());
         end = (Button) findViewById(R.id.btnEnd);
         end.setOnClickListener(this);
         start = (Button) findViewById(R.id.btnStart);
         start.setOnClickListener(this);
+        name.setText(route.getName());
+        createdBy.setText(route.getCreatedBy().toString());
+        int time = route.getEstimatedTime()/60;
+        estimatedTime.setText(time+" min");
+        totalDistance.setText(route.getTotalDistance()+" m");
         for (Coordinate_Route coordinate_route: route.getCoordinates()){
+
+            if(coordinate_route.getCoordinate().getType().equals(Type.ORIGIN)) {
+                for(Direction direction: directions) {
+                    if (direction.getCoordinate().equals(coordinate_route.getCoordinate())) {
+                        origin.setText(direction.getName());
+                    }
+                }
+            }else{
+                for(Direction direction: directions) {
+                    if (direction.getCoordinate().equals(coordinate_route.getCoordinate())) {
+                        text = direction.getName();
+                    }
+                }
+            }
             row = new TableRow(this);
             //row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
             row.setBackgroundColor(Color.parseColor("#DAE8FC"));
@@ -117,29 +149,21 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                 button.setOnClickListener(this);
                 button.setGravity(Gravity.CENTER_HORIZONTAL);
 
-                if(coordinate_route.getVisited() == null){
+                if(coordinate_route.getVisited() != null){
                     button.setEnabled(false);
+                }else{
+                    button.setEnabled(true);
                 }
 
             }
 
-            int indexOfCoord = 0;
-
-            if(directions.contains(coordinate_route.getCoordinate())){
-                indexOfCoord = directions.indexOf(coordinate_route.getCoordinate());
-            }
-            if(indexOfCoord!=0){
-                text = directions.get(indexOfCoord).getName();
-            }else{
-                text = "There is no name";
-            }
 
             TextView tv = new TextView(this);
 
             tv.setText(text);
             tv.setGravity(Gravity.CENTER_HORIZONTAL);
-            tv.setMaxWidth(50);
-            tv.setMinHeight(200);
+            tv.setMaxWidth(500);
+            //tv.setMinHeight(200);
 
             row.addView(tv);
             row.addView(button);
@@ -151,5 +175,24 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         tableLayout.setColumnStretchable(0,true);
         //tableLayout.setStretchAllColumns(true);
         tableLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+
+    }
+
+    private void drawMap (){
+        String coords = "";
+        for (Coordinate_Route coordinate : route.getCoordinates()) {
+            coords += "waypoint" + (coordinate.getOrder()-1) + "=" + coordinate.getCoordinate().getLatitude()+","+coordinate.getCoordinate().getLongitude() + "&";
+            coords += "poix" + (coordinate.getOrder()-1) + "=" + coordinate.getCoordinate().getLatitude()+","+coordinate.getCoordinate().getLongitude() + ";";
+            if (coordinate.getCoordinate().getType().equals(Type.ORIGIN)) {
+                coords += "red;";
+            } else if (coordinate.getVisited() == null) {
+                coords += "blue;";
+            } else {
+                coords += "green;";
+            }
+            coords += "white;14;"+ coordinate.getOrder() +"&";
+        }
+        String imageUrl = "https://image.maps.api.here.com/mia/1.6/routing?app_id=w4M9GIVbS5uVCLiCyGKV&app_code=JOPGDZHGQJ7FpUVmbfm4KA&e=Q&" + coords + "lc=1652B4&lw=6&t=0&w=400&h=400";
+        Picasso.get().load(imageUrl).into(image);
     }
 }
