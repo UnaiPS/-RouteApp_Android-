@@ -54,6 +54,38 @@ public class Client {
         return Encrypt.cifrarTexto(fullCode);
     }
 
+    public void editRoute(final CallbackReceiver callback, Route route) throws Exception {
+        Logger.getAnonymousLogger().severe("EditRoute");
+        try {
+            Call<Void> call =  service.editRoute(route, getSessionCode());
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    try {
+                        if(response.isSuccessful()) {
+                            callback.onSuccess(response);
+                        }  else {
+                            callback.onError(new Exception ("Error trying to connect. HTTP code: " + response.code()));
+                        }
+                    }catch(Exception ex) {
+                        Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    callback.onError(t);
+
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+            //TODO
+            throw ex;
+        }
+    }
+
     public void findAllRoutes(final CallbackReceiver callback) throws Exception {
         Logger.getAnonymousLogger().severe("FindAllRoutes");
         try {

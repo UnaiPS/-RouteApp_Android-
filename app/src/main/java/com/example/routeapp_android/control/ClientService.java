@@ -35,7 +35,7 @@ public interface ClientService {
     Call<Void> createRoute(@Body FullRoute fullRoute, @Path("code") String code);
 
     @PUT("routeappjpa.route/{code}")
-    Call<Void> editRoute(@Body FullRoute fullRoute, @Path("code") String code);
+    Call<Void> editRoute(@Body Route route, @Path("code") String code);
 
     @GET("routeappjpa.route/{code}/{id}")
     Call<Route> findRoute(@Path("id") String routeId, @Path("code") String code);
