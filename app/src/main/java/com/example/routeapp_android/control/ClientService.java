@@ -37,7 +37,7 @@ public interface ClientService {
 
     @Headers("Accept: application/json")
     @PUT("routeappjpa.route/{code}")
-    Call<Void> editRoute(@Body FullRoute fullRoute, @Path("code") String code);
+    Call<Void> editRoute(@Body Route route, @Path("code") String code);
 
     @Headers("Accept: application/json")
     @GET("routeappjpa.route/{code}/{id}")
