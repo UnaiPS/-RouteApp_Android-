@@ -2,6 +2,8 @@ package com.example.routeapp_android.control;
 
 
 import com.example.routeapp_android.encryption.Encrypt;
+import com.example.routeapp_android.model.Coordinate;
+import com.example.routeapp_android.model.Coordinate_Route;
 import com.example.routeapp_android.model.Direction;
 import com.example.routeapp_android.model.Route;
 import com.example.routeapp_android.model.Session;
@@ -23,7 +25,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class Client {
-    private static final String SERVER_URL = "http://192.168.21.49:8080/RouteApp_Server/webresources/";
+    private static final String SERVER_URL = "http://192.168.0.2:8080/RouteApp_Server/webresources/";
     private static String code;
     private ClientService service;
 
@@ -32,6 +34,7 @@ public class Client {
     }
 
     public Client() {
+        code = "";
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.callTimeout(3, TimeUnit.SECONDS);
         httpClient.connectTimeout(3, TimeUnit.SECONDS);
@@ -47,8 +50,103 @@ public class Client {
 
     public String getSessionCode() {
         String fullCode = code + Time.from(Instant.now()).getTime();
-        Logger.getAnonymousLogger().severe(fullCode);
         return Encrypt.cifrarTexto(fullCode);
+    }
+
+    public void editRoute(final CallbackReceiver callback, Route route) throws Exception {
+        Logger.getAnonymousLogger().severe("EditRoute");
+        try {
+            Call<Void> call =  service.editRoute(route, getSessionCode());
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    try {
+                        if(response.isSuccessful()) {
+                            callback.onSuccess(response);
+                        }  else {
+                            callback.onError(new Exception ("Error trying to connect. HTTP code: " + response.code()));
+                        }
+                    }catch(Exception ex) {
+                        Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    callback.onError(t);
+
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+            //TODO
+            throw ex;
+        }
+    }
+
+    public void findAllRoutes(final CallbackReceiver callback) throws Exception {
+        Logger.getAnonymousLogger().severe("FindAllRoutes");
+        try {
+            Call<List<Route>> call =  service.findAllRoutes(getSessionCode());
+
+            call.enqueue(new Callback<List<Route>>() {
+                @Override
+                public void onResponse(Call<List<Route>> call, Response<List<Route>> response) {
+                    try {
+                        if(response.isSuccessful()) {
+                            callback.onSuccess(response);
+                        }  else {
+                            callback.onError(new Exception ("Error trying to connect. HTTP code: " + response.code()));
+                        }
+                    }catch(Exception ex) {
+                        Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Route>> call, Throwable t) {
+                    callback.onError(t);
+
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+            //TODO
+            throw ex;
+        }
+    }
+
+    public void findRoutesByAssignedTo(final CallbackReceiver callback, String userId) throws Exception {
+        Logger.getAnonymousLogger().severe("FindRoutesByAssignedTo");
+        try {
+            Call<List<Route>> call =  service.findRoutesByAssignedTo(userId, getSessionCode());
+
+            call.enqueue(new Callback<List<Route>>() {
+                @Override
+                public void onResponse(Call<List<Route>> call, Response<List<Route>> response) {
+                    try {
+                        if(response.isSuccessful()) {
+                            callback.onSuccess(response);
+                        }  else {
+                            callback.onError(new Exception ("Error trying to connect. HTTP code: " + response.code()));
+                        }
+                    }catch(Exception ex) {
+                        Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Route>> call, Throwable t) {
+                    callback.onError(t);
+
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+            //TODO
+            throw ex;
+        }
     }
 
     public void findRouteById(final CallbackReceiver callback, String routeId) throws Exception {
@@ -115,6 +213,38 @@ public class Client {
         }
     }
 
+    public void markDestinationAsVisited(final CallbackReceiver callback, Coordinate gpsCoordinate, Coordinate_Route visitedDestination) throws Exception {
+        Logger.getAnonymousLogger().severe("MarkDestinationAsVisited");
+        try {
+            Call<Void> call =  service.markDestinationAsVisited(gpsCoordinate.getLatitude(), gpsCoordinate.getLongitude(), visitedDestination, getSessionCode());
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    try {
+                        if(response.isSuccessful()) {
+                            callback.onSuccess(response);
+                        }  else {
+                            callback.onError(new Exception ("Error trying to connect. HTTP code: " + response.code()));
+                        }
+                    }catch(Exception ex) {
+                        Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    callback.onError(t);
+
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+            //TODO
+            throw ex;
+        }
+    }
+
     public void login(final CallbackReceiver callback, User loginData) throws Exception {
         Logger.getAnonymousLogger().severe("Login");
         try {
@@ -127,7 +257,6 @@ public class Client {
                     try {
                         if(response.isSuccessful()) {
                             setCode(response.body().getCode());
-                            Logger.getAnonymousLogger().severe(response.body().getCode());
                             callback.onSuccess(response);
                         }  else {
                             callback.onError(new Exception ("Error trying to connect. HTTP code: " + response.code()));
@@ -151,7 +280,7 @@ public class Client {
     }
 
     public void registerUser(final CallbackReceiver callback, User user) throws Exception {
-        Logger.getAnonymousLogger().severe("Resgister");
+        Logger.getAnonymousLogger().severe("Register");
         try {
             user.setPassword(Encrypt.cifrarTexto(user.getPassword()));
             Call<Void> call =  service.createUser(user);
