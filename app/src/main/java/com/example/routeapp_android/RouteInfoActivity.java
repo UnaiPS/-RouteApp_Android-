@@ -73,8 +73,29 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         Button buttonDisable;
         if (v.getId()== end.getId()){
             Toast.makeText(this,"Pressed end button",Toast.LENGTH_SHORT).show();
+            route.setCoordinates(null);
+            route.setEnded(true);
+            buttonDisable = (Button)findViewById(R.id.btnEnd);
+            try{
+                buttonDisable.setEnabled(false);
+                client.editRoute(this,route);
+            }catch (Exception e){
+                buttonDisable.setEnabled(true);
+                Toast.makeText(this,"Something went wrong",Toast.LENGTH_SHORT).show();
+            }
+
         }else if(v.getId()==start.getId()){
             Toast.makeText(this,"Pressed start button",Toast.LENGTH_SHORT).show();
+            route.setCoordinates(null);
+            route.setStarted(true);
+            buttonDisable=(Button)findViewById(R.id.btnStart);
+            try {
+                buttonDisable.setEnabled(false);
+                client.editRoute(this, route);
+            }catch (Exception e){
+                buttonDisable.setEnabled(true);
+                Toast.makeText(this,"Something went wrong",Toast.LENGTH_SHORT).show();
+            }
         }else {
             Toast.makeText(this,"You pressed the button of the row with the id"+v.getId(),Toast.LENGTH_SHORT).show();
             buttonDisable=(Button)findViewById(v.getId());
@@ -94,10 +115,11 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
             }
 
+        }else if (response.body()==null){
+            Logger.getAnonymousLogger().severe("Aqui deberian de ir los botones start y end");
         }else{
             Logger.getAnonymousLogger().severe("Va a coger las direcciones");
             directions = (ArrayList<Direction>)response.body();
-            //directions.addAll((ArrayList<Direction>)response.body());
             Logger.getAnonymousLogger().severe("Hay "+directions.size()+" direcciones");
             onActivityShowing();
         }
@@ -106,7 +128,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onError(Throwable t) {
-        Logger.getAnonymousLogger().severe("Ha dado un error fatal :v"+t.getMessage());
+        Logger.getAnonymousLogger().severe("Ha habido un problema con la solicitud: "+t.getMessage());
     }
 
     private void onActivityShowing(){
@@ -117,8 +139,14 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         Logger.getAnonymousLogger().severe("The size is :"+route.getCoordinates().size());
         end = (Button) findViewById(R.id.btnEnd);
         end.setOnClickListener(this);
+        if(route.getEnded()){
+            end.setEnabled(false);
+        }
         start = (Button) findViewById(R.id.btnStart);
         start.setOnClickListener(this);
+        if(route.getStarted()){
+            start.setEnabled(false);
+        }
         name.setText(route.getName());
         createdBy.setText(route.getCreatedBy().toString());
         int time = route.getEstimatedTime()/60;
@@ -139,10 +167,11 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                     }
                 }
             }
-            row = new TableRow(this);
-            //row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
-            row.setBackgroundColor(Color.parseColor("#DAE8FC"));
+
             if(!coordinate_route.getCoordinate().getType().equals(Type.ORIGIN)){
+                row = new TableRow(this);
+                //row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
+                row.setBackgroundColor(Color.parseColor("#DAE8FC"));
                 button = new Button(this);
                 button.setText("Set GPS coords");
                 button.setId(coordinate_route.getCoordinate().getId().intValue());
@@ -154,23 +183,18 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                 }else{
                     button.setEnabled(true);
                 }
+                TextView tv = new TextView(this);
+                tv.setText(text);
+                tv.setGravity(Gravity.CENTER_HORIZONTAL);
+                tv.setMaxWidth(500);
+                //tv.setMinHeight(50);
 
+                row.addView(tv);
+                row.addView(button);
+
+                tableLayout.addView(row);
             }
 
-
-            TextView tv = new TextView(this);
-
-            tv.setText(text);
-            tv.setGravity(Gravity.CENTER_HORIZONTAL);
-            tv.setMaxWidth(500);
-            //tv.setMinHeight(200);
-
-            row.addView(tv);
-            row.addView(button);
-
-
-
-            tableLayout.addView(row);
         }
         tableLayout.setColumnStretchable(0,true);
         //tableLayout.setStretchAllColumns(true);
