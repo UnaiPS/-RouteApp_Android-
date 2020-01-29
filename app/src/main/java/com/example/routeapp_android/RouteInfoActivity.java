@@ -141,32 +141,34 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                 Context context = this;
                 if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     Logger.getAnonymousLogger().severe("No permission");
-                }
-                fusedLocationClient.getLastLocation()
-                        .addOnSuccessListener(new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                // Got last known location. In some rare situations this can be null.
-                                Logger.getAnonymousLogger().severe("Ha llegado al principio");
-                                if (location != null) {
-                                    Logger.getAnonymousLogger().severe("Location no es null");
-                                    // Logic to handle location object
-                                    Coordinate coordinate = new Coordinate();
-                                    coordinate.setLatitude(location.getLatitude());
-                                    coordinate.setLongitude(location.getLongitude());
-                                    coordinate.setType(Type.GPS);
-                                    try{
-                                        client.markDestinationAsVisited(callback,coordinate,temporalCoordRoute);
-                                    }catch (Exception e){
+                    Toast.makeText(this,"Cannot complete the request, please allow location permissons",Toast.LENGTH_LONG).show();
+                }else{
+                    fusedLocationClient.getLastLocation()
+                            .addOnSuccessListener(new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+                                    // Got last known location. In some rare situations this can be null.
+                                    Logger.getAnonymousLogger().severe("Ha llegado al principio");
+                                    if (location != null) {
+                                        Logger.getAnonymousLogger().severe("Location no es null");
+                                        // Logic to handle location object
+                                        Coordinate coordinate = new Coordinate();
+                                        coordinate.setLatitude(location.getLatitude());
+                                        coordinate.setLongitude(location.getLongitude());
+                                        coordinate.setType(Type.GPS);
+                                        try{
+                                            client.markDestinationAsVisited(callback,coordinate,temporalCoordRoute);
+                                        }catch (Exception e){
 
+                                        }
+
+                                    }else{
+                                        Logger.getAnonymousLogger().severe("Location es null");
+                                        Toast.makeText(context,"Please, enable your GPS and try again",Toast.LENGTH_LONG).show();
                                     }
-
-                                }else{
-                                    Logger.getAnonymousLogger().severe("Location es null");
-                                    Toast.makeText(context,"Please, enable your GPS and try again",Toast.LENGTH_LONG).show();
                                 }
-                            }
-                        });
+                            });
+                }
             }else{
                 Toast.makeText(this,"Something went wrong, try again later",Toast.LENGTH_LONG).show();
                 buttonDisable.setEnabled(true);
