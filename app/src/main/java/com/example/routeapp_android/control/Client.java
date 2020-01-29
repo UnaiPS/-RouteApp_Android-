@@ -216,14 +216,14 @@ public class Client {
         }
     }
 
-    public void markDestinationAsVisited(final CallbackReceiver callback, Coordinate gpsCoordinate, Coordinate_Route visitedDestination) throws Exception {
+    public void markDestinationAsVisited(final CallbackReceiver callback, Coordinate gpsCoordinate, Long routeId, Long coordinateId) throws Exception {
         Logger.getAnonymousLogger().severe("MarkDestinationAsVisited");
         try {
-            Call<Void> call =  service.markDestinationAsVisited(gpsCoordinate.getLatitude(), gpsCoordinate.getLongitude(), visitedDestination, getSessionCode());
+            Call<Long> call =  service.markDestinationAsVisited(routeId, coordinateId, gpsCoordinate, getSessionCode());
 
-            call.enqueue(new Callback<Void>() {
+            call.enqueue(new Callback<Long>() {
                 @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
+                public void onResponse(Call<Long> call, Response<Long> response) {
                     try {
                         if(response.isSuccessful()) {
                             callback.onSuccess(response);
@@ -236,7 +236,7 @@ public class Client {
                 }
 
                 @Override
-                public void onFailure(Call<Void> call, Throwable t) {
+                public void onFailure(Call<Long> call, Throwable t) {
                     callback.onError(t);
 
                 }

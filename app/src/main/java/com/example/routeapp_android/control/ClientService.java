@@ -7,6 +7,7 @@ package com.example.routeapp_android.control;
 
 import java.util.List;
 
+import com.example.routeapp_android.model.Coordinate;
 import com.example.routeapp_android.model.Coordinate_Route;
 import com.example.routeapp_android.model.Direction;
 import com.example.routeapp_android.model.FullRoute;
@@ -66,8 +67,8 @@ public interface ClientService {
     Call<List<Direction>> findDirectionsByRoute(@Path("route") String routeId, @Path("code") String code);
 
     @Headers("Accept: application/json")
-    @PUT("routeappjpa.coordinate/direction/visited/{code}/{latitude}/{longitude}")
-    Call<Void> markDestinationAsVisited(@Path("latitude") Double latitude, @Path("longitude") Double longitude, @Body Coordinate_Route visitedDestination, @Path("code") String code);
+    @PUT("routeappjpa.coordinate/direction/visited/{code}/{routeId}/{coordinateId}")
+    Call<Long> markDestinationAsVisited(@Path("routeId") Long routeId, @Path("coordinateId") Long coordinateId, @Body Coordinate gps, @Path("code") String code);
 
     //User Client
 
