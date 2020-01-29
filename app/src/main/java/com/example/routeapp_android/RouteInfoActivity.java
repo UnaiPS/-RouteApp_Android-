@@ -6,18 +6,13 @@ import androidx.core.app.ActivityCompat;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Looper;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -35,9 +30,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import retrofit2.Response;
@@ -60,13 +53,12 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
     private TextView totalDistance;
     private TextView origin;
     private Client client = new Client();
-    private static boolean gotData = false;
+    private boolean gotData = false;
 
 
     //Crear coordenadas a partir de GPS del dispositivo
     private FusedLocationProviderClient fusedLocationClient;
     private static Coordinate_Route temporalCoordRoute = new Coordinate_Route();
-    private static Bitmap bitmap;
 
 
     @Override
@@ -99,7 +91,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
     }
 
     public static void setGotData(boolean gotData) {
-        RouteInfoActivity.gotData = gotData;
+        //RouteInfoActivity.gotData = gotData;
     }
 
     @Override
@@ -150,7 +142,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
             Logger.getAnonymousLogger().severe("The coordinates are: "+route.getCoordinates().toString());
             Logger.getAnonymousLogger().severe("Button id is: "+buttonDisable.getId());
 
-            for(Coordinate_Route coor_rout: route.getCoordinates()){
+            for(Coordinate_Route coor_rout: routeCopy.getCoordinates()){
                 if(coor_rout.getCoordinate().getId() == v.getId()){
                     temporalCoordRoute=coor_rout;
                 }
@@ -195,8 +187,6 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                 buttonDisable.setEnabled(true);
             }
 
-
-            //client.markDestinationAsVisited(this,);
         }
     }
 
@@ -289,7 +279,6 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                 tv.setTextColor(Color.parseColor("#ffffff"));
                 tv.setGravity(Gravity.CENTER_HORIZONTAL);
                 tv.setMaxWidth(500);
-                //tv.setMinHeight(50);
 
                 row.addView(tv);
                 row.addView(button);
