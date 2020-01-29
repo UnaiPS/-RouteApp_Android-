@@ -2,11 +2,15 @@ package com.example.routeapp_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonRestore;
     private EditText tfLogin;
     private EditText pfPassword;
+    private CheckBox cbRemember;
     private MediaPlayer mp;
     LottieAnimationView animation;
 
@@ -57,9 +62,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             buttonRestore.setOnClickListener(this);
             tfLogin = (EditText) findViewById(R.id.tfLogin);
             pfPassword = (EditText) findViewById(R.id.pfPassword);
+            cbRemember = (CheckBox) findViewById(R.id.cbRemember);
             mp = MediaPlayer.create(this, R.raw.button);
+
+            AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "root", null, 1);
+            SQLiteDatabase db = admin.getWritableDatabase();
+
             KeyReader.setKeyResource(getResources().openRawResource(R.raw.publickey));
             Client.setServerURL(getResources().getString(R.string.serverIp), getResources().getString(R.string.serverPort));
+
+            Cursor row = db.rawQuery("select login, password from loginstorage where id = 1", null);
+
+            if (row.moveToFirst()) {
+                tfLogin.setText(row.getString(0));
+                pfPassword.setText(row.getString(1));
+                db.close();
+                cbRemember.setChecked(true);
+            } else {
+                db.close();
+            }
+
         } catch (Exception ex) {
             Logger.getAnonymousLogger().severe("Fatal error in startup.");
             finish();
@@ -79,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(login);
         boolean specialChars = m.find();
-        //The limiter should do its job, but this code double checks
         if(login.length()>30 || specialChars){
             Toast.makeText(this,"You must enter a valid username.",Toast.LENGTH_LONG).show();
         }else if(login.length()<1 || passwd.length()<1){
@@ -96,15 +117,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 blockControls(true);
 
             }catch(Exception e){
-                Toast.makeText(this, "Unexpected error happened." + e.getLocalizedMessage(),Toast.LENGTH_LONG).show();
-                blockControls(false);
-            /*}catch(BadLoginException e){
-                Toast.makeText(this,"The user you have entered is not correct.",Toast.LENGTH_LONG).show();
-            }catch(NoThreadAvailableException e){
-                Toast.makeText(this,"Busy server. Please wait.",Toast.LENGTH_LONG).show();
-            }catch(BadPasswordException e){
-                Toast.makeText(this,"The password you have entered is not correct.",Toast.LENGTH_LONG).show();
-            */}
+                Toast.makeText(this, "Unexpected error happened.",Toast.LENGTH_LONG).show();
+                blockControls(false);}
         }
     }
 
@@ -123,9 +137,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public void handleRestoreButtonAction(){
         mp.start();
-        /*Intent intent = new Intent(this, SignUp.class);
+        Intent intent = new Intent(this, RestorePassword.class);
         setResult(RESULT_OK, intent);
-        startActivity(intent);*/
+        startActivity(intent);
     }
 
     /**
@@ -164,8 +178,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             user = ((Session)response.body()).getLogged();
             blockControls(false);
             if (user.getPrivilege().equals(Privilege.USER)) {
-                tfLogin.setText("");
-                pfPassword.setText("");
+                AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "root", null, 1);
+                SQLiteDatabase db = admin.getWritableDatabase();
+                if (cbRemember.isChecked()) {
+                    ContentValues loginrow = new ContentValues();
+                    loginrow.put("id", 1);
+                    loginrow.put("login", tfLogin.getText().toString());
+                    loginrow.put("password", pfPassword.getText().toString());
+                    db.insert("loginstorage", null, loginrow);
+                    db.close();
+                } else {
+                    db.delete("loginstorage", "id=1", null);
+                    tfLogin.setText("");
+                    pfPassword.setText("");
+                }
                 Intent intent = new Intent(this, ActivityRoute.class);
                 intent.putExtra("USER", user);
                 setResult(RESULT_OK, intent);
@@ -178,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onError(Throwable t) {
-        Toast.makeText(this, t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Unexpected error happened.",Toast.LENGTH_LONG).show();
         blockControls(false);
 
     }

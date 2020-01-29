@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">RouteApp_Android</string>
+
+    <string name="buttonSignUp">Registrarse</string>
+    <string name="buttonLogin">Iniciar Sesion</string>
+    <string name="btnBack">Atras</string>
+    <string name="btnUndo">Deshacer</string>
+    <string name="btnRedo">Rehacer</string>
+    <string name="btnLogOut">Cerrar Sesión</string>
+    <string name="btnRestore">Recuperar contraseña</string>
+    <string name="start">Iniciar</string>
+    <string name="end">Terminar</string>
+    <string name="gps">GPS</string>
+    <string name="cbRemember">Recuerdame</string>
+
+    <string name="loginHint">Nombre de usuario</string>
+    <string name="passwordHint">Contraseña</string>
+    <string name="emailHint">Email</string>
+
+    <string name="tvFullName">Nombre completo:</string>
+    <string name="tvEmail">E-mail:</string>
+    <string name="tvLogin">Nombre de usuario:</string>
+    <string name="tvPassword">Contraseña:</string>
+    <string name="tvConfirm">Confirma la contraseña:</string>
+    <string name="greeting">Bienvenid@,</string>
+    <string name="your_routes">TUS RUTAS</string>
+    <string name="detail">Detalles</string>
+    <string name="routeName">Nombre:</string>
+    <string name="createdBy">Creada por:</string>
+    <string name="totalDistance">Distancia total:</string>
+    <string name="estimatedTime">Tiempo estimado:</string>
+    <string name="Origin">Origen: </string>
+    <string name="Destinations">Destino/s:</string>
+    <string name="routeImageDescription">Imagen de la ruta</string>
+    <string name="restore_info">Una nueva contraseña sera enviada a tu email. Por favor rellene el formulario.</string>
+
+    <string name="fullNameExample">Maria Magdalena Martinez</string>
+    <string name="emailExample">maria.magdalena@email.com</string>
+    <string name="loginExample">Maria24Magdalena</string>
+    <string name="passwordExample">Contraseña</string>
+    <string name="confirmExample">Repita la contraseña</string>
+</resources>

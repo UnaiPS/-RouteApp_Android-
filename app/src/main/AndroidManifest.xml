@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
 		<activity android:name=".SignUp" />
+        <activity android:name=".RestorePassword"/>
         <activity android:name=".ActivityRoute"/>
         <activity android:name=".RouteInfoActivity"/>
 

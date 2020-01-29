@@ -1,41 +1,42 @@
 <resources>
     <string name="app_name">RouteApp_Android</string>
-    <string name="sampleRouteName">Route Test</string>
-    <string name="sampleCreatedBy">Jon Calvo Gaminde</string>
-    <string name="sampleEstimatedTime">20 min</string>
-    <string name="sampleTotalDistance">289 m</string>
-    <string name="sampleOrigin">Tartanga CIFP</string>
-	<string name="loginHint">Login</string>
-    <string name="passwordHint">Password</string>
+
     <string name="buttonSignUp">Sign Up</string>
     <string name="buttonLogin">Login</string>
+    <string name="btnBack">Back</string>
+    <string name="btnUndo">Undo</string>
+    <string name="btnRedo">Redo</string>
+    <string name="btnLogOut">Log Out</string>
+    <string name="btnRestore">Restore Password</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="gps">GPS</string>
+    <string name="cbRemember">Remember Me</string>
+
+    <string name="loginHint">Login</string>
+    <string name="passwordHint">Password</string>
+    <string name="emailHint">Email</string>
+
     <string name="tvFullName">Full Name:</string>
     <string name="tvEmail">E-mail:</string>
     <string name="tvLogin">Login:</string>
     <string name="tvPassword">Password:</string>
     <string name="tvConfirm">Confirm Password:</string>
-    <string name="btnBack">Back</string>
-    <string name="btnUndo">Undo</string>
-    <string name="btnRedo">Redo</string>
-    <string name="fullNameHint">Sarah Smith Summers</string>
-    <string name="emailHint">sarah.smith@email.com</string>
-    <string name="registerLoginHint">Sarah24Smith</string>
-    <string name="confirmHint">Repeat the password</string>
     <string name="greeting">Welcome,</string>
-    <string name="btnLogOut">Log Out</string>
-    <string name="btnRestore">Restore Password</string>
-    <string name="cbRemember">Remember Me</string>
     <string name="your_routes">YOUR ROUTES</string>
     <string name="detail">Detail</string>
     <string name="routeName">Name:</string>
     <string name="createdBy">Created By:</string>
     <string name="totalDistance">Total Distance:</string>
     <string name="estimatedTime">Estimated Time:</string>
-    <string name="start">Start</string>
-    <string name="end">End</string>
-    <string name="gps">GPS</string>
     <string name="Origin">Origin: </string>
     <string name="Destinations">Destination/s:</string>
     <string name="routeImageDescription">Here goes the route image</string>
+    <string name="restore_info">A new password will be sent to your email. Please enter your data bellow.</string>
 
+    <string name="fullNameExample">Sarah Smith Summers</string>
+    <string name="emailExample">sarah.smith@email.com</string>
+    <string name="loginExample">Sarah24Smith</string>
+    <string name="passwordExample">Password</string>
+    <string name="confirmExample">Repeat the password</string>
 </resources>

@@ -39,9 +39,9 @@ public class Client {
 
     public Client() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.callTimeout(3, TimeUnit.SECONDS);
+        httpClient.callTimeout(15, TimeUnit.SECONDS);
         httpClient.connectTimeout(3, TimeUnit.SECONDS);
-        httpClient.readTimeout(3, TimeUnit.SECONDS);
+        httpClient.readTimeout(15, TimeUnit.SECONDS);
         httpClient.writeTimeout(3, TimeUnit.SECONDS);
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(serverURL)
@@ -288,6 +288,38 @@ public class Client {
         try {
             user.setPassword(Encrypt.cifrarTexto(user.getPassword()));
             Call<Void> call =  service.createUser(user);
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    try {
+                        if(response.isSuccessful()) {
+                            callback.onSuccess(response);
+                        }  else {
+                            callback.onError(new Exception ("Error trying to connect. HTTP code: " + response.code()));
+                        }
+                    }catch(Exception ex) {
+                        Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    callback.onError(t);
+
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+            //TODO
+            throw ex;
+        }
+    }
+
+    public void restorePassword(final CallbackReceiver callback, User user) throws Exception {
+        Logger.getAnonymousLogger().severe("RestorePassword");
+        try {
+            Call<Void> call =  service.forgottenPassword(user.getLogin(), user.getEmail());
 
             call.enqueue(new Callback<Void>() {
                 @Override

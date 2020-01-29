@@ -105,8 +105,8 @@ public interface ClientService {
     Call<Session> login(@Body User user);
 
     @Headers("Accept: application/json")
-    @GET("routeappjpa.user/forgottenpasswd/{login}/{email}")
-    Call<Void> forgottenPassword(@Body User userData);
+    @GET("routeappjpa.user/forgottenpasswd/{email}/{login}")
+    Call<Void> forgottenPassword(@Path("login") String login, @Path("email") String email);
 
     @Headers("Accept: application/json")
     @POST("routeappjpa.user/email/{code}")
