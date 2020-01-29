@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -73,6 +74,9 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_info);
 
+        Intent intent = getIntent();
+        Long idroute = (Long)intent.getSerializableExtra("ROUTE");
+
         tableLayout = (TableLayout) findViewById(R.id.destinationsTableLayout);
         image = (ImageView) findViewById(R.id.routeImage);
         name = (TextView) findViewById(R.id.routeNameText);
@@ -83,7 +87,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (!gotData) {
             try {
-                client.findRouteById(this, "7");
+                client.findRouteById(this, idroute.toString());
                 gotData = true;
             } catch (Exception e) {
 
@@ -92,6 +96,10 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
             onActivityShowing();
         }
 
+    }
+
+    public static void setGotData(boolean gotData) {
+        RouteInfoActivity.gotData = gotData;
     }
 
     @Override

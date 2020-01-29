@@ -18,7 +18,12 @@
             </intent-filter>
         </activity>
 		<activity android:name=".SignUp" />
+        <activity android:name=".ActivityRoute"/>
         <activity android:name=".RouteInfoActivity"/>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

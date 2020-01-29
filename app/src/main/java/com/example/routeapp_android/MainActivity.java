@@ -159,8 +159,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (user.getPrivilege().equals(Privilege.USER)) {
                 tfLogin.setText("");
                 pfPassword.setText("");
-                Intent intent = new Intent(this, RouteInfoActivity.class);
-                //intent.putExtra("USER", user);
+                Intent intent = new Intent(this, ActivityRoute.class);
+                intent.putExtra("USER", user);
                 setResult(RESULT_OK, intent);
                 startActivity(intent);
             } else {

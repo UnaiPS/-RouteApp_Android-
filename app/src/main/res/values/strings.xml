@@ -1,15 +1,5 @@
 <resources>
     <string name="app_name">RouteApp_Android</string>
-    <string name="routeName">Name:</string>
-    <string name="createdBy">Created By:</string>
-    <string name="totalDistance">Total Distance:</string>
-    <string name="estimatedTime">Estimated Time:</string>
-    <string name="start">Start</string>
-    <string name="end">End</string>
-    <string name="gps">GPS</string>
-    <string name="Origin">Origin: </string>
-    <string name="Destinations">Destination/s:</string>
-    <string name="routeImageDescription">Here goes the route image</string>
     <string name="sampleRouteName">Route Test</string>
     <string name="sampleCreatedBy">Jon Calvo Gaminde</string>
     <string name="sampleEstimatedTime">20 min</string>
@@ -35,5 +25,17 @@
     <string name="btnLogOut">Log Out</string>
     <string name="btnRestore">Restore Password</string>
     <string name="cbRemember">Remember Me</string>
+    <string name="your_routes">YOUR ROUTES</string>
+    <string name="detail">Detail</string>
+    <string name="routeName">Name:</string>
+    <string name="createdBy">Created By:</string>
+    <string name="totalDistance">Total Distance:</string>
+    <string name="estimatedTime">Estimated Time:</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="gps">GPS</string>
+    <string name="Origin">Origin: </string>
+    <string name="Destinations">Destination/s:</string>
+    <string name="routeImageDescription">Here goes the route image</string>
 
 </resources>
