@@ -5,6 +5,8 @@ import androidx.core.app.ActivityCompat;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -32,6 +34,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -46,19 +49,22 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
     private String text;
     private Button end;
     private Button start;
-    private ImageView image;
-    private Route route;
-    private ArrayList <Direction> directions;
+    private static ImageView image;
+    private static Route route;
+    private static ArrayList <Direction> directions;
     private TextView name;
     private TextView createdBy;
     private TextView estimatedTime;
     private TextView totalDistance;
     private TextView origin;
     private Client client = new Client();
+    private static boolean gotData = false;
+
+
     //Crear coordenadas a partir de GPS del dispositivo
     private FusedLocationProviderClient fusedLocationClient;
     private static Coordinate_Route temporalCoordRoute = new Coordinate_Route();
-
+    private static Bitmap bitmap;
 
 
     @Override
@@ -67,18 +73,22 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_route_info);
 
         tableLayout = (TableLayout) findViewById(R.id.destinationsTableLayout);
-        image = (ImageView)findViewById(R.id.routeImage);
-        name = (TextView)findViewById(R.id.routeNameText);
-        createdBy = (TextView)findViewById(R.id.createdByText);
-        estimatedTime = (TextView)findViewById(R.id.estimatedTimeText);
-        totalDistance = (TextView)findViewById(R.id.totalDistanceText);
-        origin = (TextView)findViewById(R.id.originText);
+        image = (ImageView) findViewById(R.id.routeImage);
+        name = (TextView) findViewById(R.id.routeNameText);
+        createdBy = (TextView) findViewById(R.id.createdByText);
+        estimatedTime = (TextView) findViewById(R.id.estimatedTimeText);
+        totalDistance = (TextView) findViewById(R.id.totalDistanceText);
+        origin = (TextView) findViewById(R.id.originText);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (!gotData) {
+            try {
+                client.findRouteById(this, "4");
+                gotData = true;
+            } catch (Exception e) {
 
-        try{
-            client.findRouteById(this,"7");
-        }catch(Exception e) {
-
+            }
+        } else {
+            onActivityShowing();
         }
 
     }
@@ -97,7 +107,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                     break;
                 }
             }
-            if(isAllCoordsVisited==true){
+            if(isAllCoordsVisited){
                 route.setCoordinates(null);
                 route.setEnded(true);
                 try{
@@ -181,23 +191,25 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onSuccess(Response response) {
-        if(response.body().getClass().equals(Route.class)){
-            Logger.getAnonymousLogger().severe("Va a coger la ruta");
-            route = ((Route)response.body());
-            Logger.getAnonymousLogger().severe("Ha cogido la ruta: "+route.getName());
-            try{
+        try{
+            if(response.body().getClass().equals(Route.class)){
+                Logger.getAnonymousLogger().severe("Va a coger la ruta");
+                route = ((Route)response.body());
+                Logger.getAnonymousLogger().severe("Ha cogido la ruta: "+route.getName());
+
                 client.findDirectionsByRoute(this,route.getId().toString());
-            }catch (Exception e){
 
+
+            }else if (response.body()==null){
+                Logger.getAnonymousLogger().severe("Aqui deberian de ir los botones start y end");
+            }else{
+                Logger.getAnonymousLogger().severe("Va a coger las direcciones");
+                directions = (ArrayList<Direction>)response.body();
+                Logger.getAnonymousLogger().severe("Hay "+directions.size()+" direcciones");
+                onActivityShowing();
             }
+        }catch (Exception e){
 
-        }else if (response.body()==null){
-            Logger.getAnonymousLogger().severe("Aqui deberian de ir los botones start y end");
-        }else{
-            Logger.getAnonymousLogger().severe("Va a coger las direcciones");
-            directions = (ArrayList<Direction>)response.body();
-            Logger.getAnonymousLogger().severe("Hay "+directions.size()+" direcciones");
-            onActivityShowing();
         }
 
     }
@@ -278,7 +290,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    private void drawMap (){
+    private void drawMap () {
         String coords = "";
         for (Coordinate_Route coordinate : route.getCoordinates()) {
             coords += "waypoint" + (coordinate.getOrder()-1) + "=" + coordinate.getCoordinate().getLatitude()+","+coordinate.getCoordinate().getLongitude() + "&";
@@ -292,7 +304,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
             }
             coords += "white;14;"+ coordinate.getOrder() +"&";
         }
-        String imageUrl = "https://image.maps.api.here.com/mia/1.6/routing?app_id=w4M9GIVbS5uVCLiCyGKV&app_code=JOPGDZHGQJ7FpUVmbfm4KA&e=Q&" + coords + "lc=1652B4&lw=6&t=0&w=400&h=400";
+        String imageUrl = "https://image.maps.api.here.com/mia/1.6/routing?app_id=" + getResources().getString(R.string.hereApiId) + "&app_code=" + getResources().getString(R.string.hereApiCode) + "&e=Q&" + coords + "lc=1652B4&lw=6&t=0&w=400&h=400";
         Picasso.get().load(imageUrl).into(image);
     }
 }
