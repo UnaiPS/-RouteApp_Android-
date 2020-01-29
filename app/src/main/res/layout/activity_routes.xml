@@ -28,7 +28,7 @@
         android:id="@+id/lvRoutes"
         android:layout_width="325dp"
         android:layout_height="436dp"
-        android:background="#403b37"
+        android:background="#a6a7a0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
