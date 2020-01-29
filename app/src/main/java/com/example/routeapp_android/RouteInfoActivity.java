@@ -53,6 +53,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
     private TextView totalDistance;
     private TextView origin;
     private Client client = new Client();
+    private Long idroute;
     private boolean gotData = false;
 
 
@@ -67,7 +68,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_route_info);
 
         Intent intent = getIntent();
-        Long idroute = (Long)intent.getSerializableExtra("ROUTE");
+        idroute = (Long)intent.getSerializableExtra("ROUTE");
 
         tableLayout = (TableLayout) findViewById(R.id.destinationsTableLayout);
         image = (ImageView) findViewById(R.id.routeImage);
@@ -102,7 +103,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
             buttonDisable = (Button)findViewById(R.id.btnEnd);
             boolean isAllCoordsVisited = true;
-            for(Coordinate_Route coordinate_route: route.getCoordinates()){
+            for(Coordinate_Route coordinate_route: routeCopy.getCoordinates()){
                 if(coordinate_route.getVisited()==null && coordinate_route.getOrder()!=1){
                     isAllCoordsVisited=false;
                     break;
@@ -139,7 +140,6 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
             Toast.makeText(this,"You pressed the button of the row with the id"+v.getId(),Toast.LENGTH_SHORT).show();
             buttonDisable=(Button)findViewById(v.getId());
             buttonDisable.setEnabled(false);
-            Logger.getAnonymousLogger().severe("The coordinates are: "+route.getCoordinates().toString());
             Logger.getAnonymousLogger().severe("Button id is: "+buttonDisable.getId());
 
             for(Coordinate_Route coor_rout: routeCopy.getCoordinates()){
@@ -170,7 +170,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                                         coordinate.setLongitude(location.getLongitude());
                                         coordinate.setType(Type.GPS);
                                         try{
-                                            client.markDestinationAsVisited(callback,coordinate,temporalCoordRoute);
+                                            client.markDestinationAsVisited(callback,coordinate,routeCopy.getId(),temporalCoordRoute.getCoordinate().getId());
                                         }catch (Exception e){
 
                                         }
@@ -197,12 +197,27 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                 Logger.getAnonymousLogger().severe("Va a coger la ruta");
                 route = ((Route)response.body());
                 Logger.getAnonymousLogger().severe("Ha cogido la ruta: "+route.getName());
-                routeCopy=route;
+                routeCopy.setId(route.getId());
+                routeCopy.setEnded(route.getEnded());
+                routeCopy.setStarted(route.getStarted());
+                routeCopy.setCoordinates(route.getCoordinates());
+                routeCopy.setAssignedTo(route.getAssignedTo());
+                routeCopy.setCreatedBy(route.getCreatedBy());
+                routeCopy.setEstimatedTime(route.getEstimatedTime());
+                routeCopy.setMode(route.getMode());
+                routeCopy.setName(route.getName());
+                routeCopy.setTotalDistance(route.getTotalDistance());
+                routeCopy.setTrafficMode(route.getTrafficMode());
+                routeCopy.setTransportMode(route.getTransportMode());
                 client.findDirectionsByRoute(this,route.getId().toString());
 
 
             }else if (response.body()==null){
                 Logger.getAnonymousLogger().severe("Aqui deberian de ir los botones start y end");
+            }else if(response.body().getClass().equals(Long.class)){
+                Logger.getAnonymousLogger().severe("The GPS coords have been saved correctly, the data will be reloaded");
+                Bundle tempBundle = new Bundle();
+                onCreate(tempBundle);
             }else{
                 Logger.getAnonymousLogger().severe("Va a coger las direcciones");
                 directions = (ArrayList<Direction>)response.body();

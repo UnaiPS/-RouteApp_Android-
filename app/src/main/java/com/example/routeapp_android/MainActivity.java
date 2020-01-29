@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.routeapp_android.control.CallbackReceiver;
 import com.example.routeapp_android.control.Client;
 import com.example.routeapp_android.encryption.KeyReader;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText tfLogin;
     private EditText pfPassword;
     private MediaPlayer mp;
-
+    LottieAnimationView animation;
 
 
     /**
@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            animation = findViewById(R.id.animation);
+            animation.setVisibility(View.GONE);
             buttonLogin = (Button) findViewById(R.id.btnLogin);
             buttonLogin.setOnClickListener(this);
             buttonSignup = (Button) findViewById(R.id.btnSignUp);
@@ -142,6 +144,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void blockControls(boolean block) {
+        if(block){
+            animation.setVisibility(View.VISIBLE);
+        }else{
+            animation.setVisibility(View.GONE);
+        }
         buttonLogin.setEnabled(!block);
         buttonRestore.setEnabled(!block);
         buttonSignup.setEnabled(!block);

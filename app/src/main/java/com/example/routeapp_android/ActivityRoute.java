@@ -1,21 +1,16 @@
 package com.example.routeapp_android;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.routeapp_android.control.CallbackReceiver;
 import com.example.routeapp_android.control.Client;
@@ -23,15 +18,10 @@ import com.example.routeapp_android.model.Route;
 import com.example.routeapp_android.model.User;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Response;
 
@@ -101,7 +91,7 @@ public class ActivityRoute extends AppCompatActivity implements CallbackReceiver
 
         list.setAdapter(adaptador);
         image.clearAnimation();
-        image.setImageResource(R.drawable.refresh);
+        image.setImageResource(R.drawable.loadingrefresh);
     }
 
     @Override
@@ -109,12 +99,12 @@ public class ActivityRoute extends AppCompatActivity implements CallbackReceiver
             animation.setVisibility(View.VISIBLE);
         Toast.makeText(this, t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
         image.clearAnimation();
-        image.setImageResource(R.drawable.refresh);
+        image.setImageResource(R.drawable.loadingrefresh);
     }
 
     @Override
     public void onClick(View view) {
-        image.setImageResource(R.drawable.loadingrefresh);
+        image.setImageResource(R.drawable.refresh);
         Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         rotation.setFillAfter(true);
         image.startAnimation(rotation);
