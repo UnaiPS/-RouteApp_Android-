@@ -49,8 +49,9 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
     private String text;
     private Button end;
     private Button start;
-    private static ImageView image;
+    private ImageView image;
     private static Route route;
+    private Route routeCopy = new Route();
     private static ArrayList <Direction> directions;
     private TextView name;
     private TextView createdBy;
@@ -82,7 +83,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (!gotData) {
             try {
-                client.findRouteById(this, "4");
+                client.findRouteById(this, "7");
                 gotData = true;
             } catch (Exception e) {
 
@@ -115,6 +116,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                     client.editRoute(this,route);
                 }catch (Exception e){
                     buttonDisable.setEnabled(true);
+                    route.setEnded(false);
                     Toast.makeText(this,"Something went wrong",Toast.LENGTH_SHORT).show();
                 }
             }else{
@@ -130,6 +132,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                 client.editRoute(this, route);
             }catch (Exception e){
                 buttonDisable.setEnabled(true);
+                route.setStarted(false);
                 Toast.makeText(this,"Something went wrong",Toast.LENGTH_SHORT).show();
             }
         }else {
@@ -196,7 +199,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                 Logger.getAnonymousLogger().severe("Va a coger la ruta");
                 route = ((Route)response.body());
                 Logger.getAnonymousLogger().severe("Ha cogido la ruta: "+route.getName());
-
+                routeCopy=route;
                 client.findDirectionsByRoute(this,route.getId().toString());
 
 
@@ -259,12 +262,14 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
             if(!coordinate_route.getCoordinate().getType().equals(Type.ORIGIN)){
                 row = new TableRow(this);
                 //row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
-                row.setBackgroundColor(Color.parseColor("#DAE8FC"));
+                row.setBackgroundColor(Color.parseColor("#403b37"));
                 button = new Button(this);
                 button.setText("Set GPS coords");
                 button.setId(coordinate_route.getCoordinate().getId().intValue());
                 button.setOnClickListener(this);
                 button.setGravity(Gravity.CENTER_HORIZONTAL);
+                button.setBackgroundColor(Color.parseColor("#332f2c"));
+                button.setTextColor(Color.parseColor("#ffffff"));
 
                 if(coordinate_route.getVisited() != null){
                     button.setEnabled(false);
@@ -273,6 +278,7 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
                 }
                 TextView tv = new TextView(this);
                 tv.setText(text);
+                tv.setTextColor(Color.parseColor("#ffffff"));
                 tv.setGravity(Gravity.CENTER_HORIZONTAL);
                 tv.setMaxWidth(500);
                 //tv.setMinHeight(50);

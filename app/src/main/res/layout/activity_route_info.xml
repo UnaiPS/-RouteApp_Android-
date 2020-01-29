@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#1f1f1f">
 
     <TextView
         android:id="@+id/originText"
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="32dp"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/totalDistanceText" />
 
@@ -20,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="32dp"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/estimatedTimeText" />
 
@@ -29,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="32dp"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createdByText" />
 
@@ -38,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="32dp"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/routeNameText" />
 
@@ -60,6 +65,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="36dp"
         android:text="@string/routeName"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/routeImage" />
 
@@ -70,6 +76,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="15dp"
         android:text="@string/createdBy"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRouteName" />
 
@@ -79,6 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="32dp"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/routeImage" />
 
@@ -89,6 +97,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="15dp"
         android:text="@string/estimatedTime"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCreatedBy" />
 
@@ -99,6 +108,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="15dp"
         android:text="@string/totalDistance"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEstimatedTime" />
 
@@ -109,6 +119,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="15dp"
         android:text="@string/Origin"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTotalDistance" />
 
@@ -119,6 +130,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="15dp"
         android:text="@string/Destinations"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvOrigin" />
 
@@ -128,7 +140,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="16dp"
+        android:background=" #332f2c"
         android:text="@string/start"
+        android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -138,7 +152,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
+        android:background=" #332f2c"
         android:text="@string/end"
+        android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
