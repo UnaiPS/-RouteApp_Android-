@@ -101,4 +101,16 @@
         app:layout_constraintEnd_toEndOf="@+id/pfPassword"
         app:layout_constraintStart_toStartOf="@+id/pfPassword"
         app:layout_constraintTop_toBottomOf="@+id/pfPassword" />
+
+    <Button
+        android:id="@+id/btnCredits"
+        android:layout_width="166dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="60dp"
+        android:background=" #332f2c"
+        android:text="@string/btnCredits"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

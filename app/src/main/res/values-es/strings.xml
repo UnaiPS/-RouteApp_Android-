@@ -12,6 +12,7 @@
     <string name="end">Terminar</string>
     <string name="gps">GPS</string>
     <string name="cbRemember">Recuerdame</string>
+    <string name="btnCredits">Creditos</string>
 
     <string name="loginHint">Nombre de usuario</string>
     <string name="passwordHint">Contraseña</string>

@@ -1,6 +1,7 @@
 package com.example.routeapp_android;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.routeapp.unityanimation.*;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText pfPassword;
     private CheckBox cbRemember;
     private MediaPlayer mp;
+    private Button buttonCredits;
     LottieAnimationView animation;
 
 
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tfLogin = (EditText) findViewById(R.id.tfLogin);
             pfPassword = (EditText) findViewById(R.id.pfPassword);
             cbRemember = (CheckBox) findViewById(R.id.cbRemember);
+            buttonCredits = (Button) findViewById(R.id.btnCredits);
+            buttonCredits.setOnClickListener(this);
             mp = MediaPlayer.create(this, R.raw.button);
 
             AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "root", null, 1);
@@ -154,6 +158,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 handleSignUpButtonAction();
         } else if(view.getId()==buttonRestore.getId()){
             handleRestoreButtonAction();
+        } else if(view.getId()==buttonCredits.getId()){
+            Toast.makeText(this,"Pressed the credits button",Toast.LENGTH_SHORT).show();
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.routeapp.unityanimation");
+            if (launchIntent != null) {
+                startActivity(launchIntent);//null pointer check in case package name was not found
+            }else{
+                Toast.makeText(this,"No credits found on your phone, please install the credits",Toast.LENGTH_LONG).show();
+            }
         }
     }
 

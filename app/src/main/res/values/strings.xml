@@ -12,6 +12,7 @@
     <string name="end">End</string>
     <string name="gps">GPS</string>
     <string name="cbRemember">Remember Me</string>
+    <string name="btnCredits">Credits</string>
 
     <string name="loginHint">Login</string>
     <string name="passwordHint">Password</string>
