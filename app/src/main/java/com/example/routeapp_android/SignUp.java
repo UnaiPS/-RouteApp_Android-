@@ -29,7 +29,7 @@ import retrofit2.Response;
 
 /**
  * Class for the SignUp activity
- * @author Unai Pérez Sánchez
+ * @author Jon Calvo
  */
 public class SignUp extends AppCompatActivity implements View.OnClickListener, CallbackReceiver {
     private EditText fullName;
@@ -46,7 +46,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, C
 
     private final String REGULAREXPRESSION = "^[A-Za-z0-9+_.-]+@(.+)$";
 
-    /*
+    /**
      * Initializes the Activity
      */
     @Override
@@ -164,6 +164,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, C
         }
     }
 
+    /**
+     * This method blocks the controls when sign up button is pressed to not do more petitions to the
+     * server
+     * @param block
+     */
     private void blockControls(boolean block) {
         btnCancel.setEnabled(!block);
         btnRedo.setEnabled(!block);

@@ -1,7 +1,6 @@
 package com.example.routeapp_android;
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.routeapp.unityanimation.*;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -169,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * When a user is going to login, all the controls are going to be disabled
+     * @param block A Boolean object
+     */
     private void blockControls(boolean block) {
         if(block){
             animation.setVisibility(View.VISIBLE);
@@ -182,6 +185,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pfPassword.setEnabled(!block);
     }
 
+    /**
+     * This class is going to get the response if all goes fine and process it
+     * @param response A Response object
+     */
     @Override
     public void onSuccess(Response response) {
 
@@ -214,6 +221,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * This method is going to be executed when the operation with the server fails
+     * @param t
+     */
     @Override
     public void onError(Throwable t) {
         Toast.makeText(this, "Unexpected error happened.",Toast.LENGTH_LONG).show();

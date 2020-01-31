@@ -6,6 +6,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+/**
+ * This class is going to store the information about the login
+ * @Author Jon Calvo
+ */
 public class AdminSQLiteOpenHelper extends SQLiteOpenHelper{
     public AdminSQLiteOpenHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

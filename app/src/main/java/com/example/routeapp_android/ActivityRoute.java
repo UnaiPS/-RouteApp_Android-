@@ -25,6 +25,11 @@ import java.util.stream.Collectors;
 import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Response;
 
+/**
+ * This class is going to load and show all the routes available for the delivery man/woman who
+ * signed in
+ * @Author Daira Eguzkiza Lamelas
+ */
 public class ActivityRoute extends AppCompatActivity implements CallbackReceiver, View.OnClickListener {
     private ListView list;
     private ArrayAdapter<String> adaptador;
@@ -76,6 +81,10 @@ public class ActivityRoute extends AppCompatActivity implements CallbackReceiver
 
 }
 
+    /**
+     * If the request is successful the response will be catch here
+     * @param response A Response object
+     */
     @Override
     public void onSuccess(Response response) {
         if(response.body() == null ){
@@ -94,6 +103,10 @@ public class ActivityRoute extends AppCompatActivity implements CallbackReceiver
         image.setImageResource(R.drawable.loadingrefresh);
     }
 
+    /**
+     * If the request fails there will be not response and an error code will be returned
+     * @param t A Throwabe object
+     */
     @Override
     public void onError(Throwable t) {
             animation.setVisibility(View.VISIBLE);
@@ -102,6 +115,10 @@ public class ActivityRoute extends AppCompatActivity implements CallbackReceiver
         image.setImageResource(R.drawable.loadingrefresh);
     }
 
+    /**
+     * This method will be used when a button is clicked
+     * @param view A View object
+     */
     @Override
     public void onClick(View view) {
         image.setImageResource(R.drawable.refresh);

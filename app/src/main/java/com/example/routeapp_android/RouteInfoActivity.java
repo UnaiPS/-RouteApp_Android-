@@ -35,6 +35,11 @@ import java.util.logging.Logger;
 
 import retrofit2.Response;
 
+/**
+ * This class is going to display all the info about the route to be done and can modify some route
+ * params
+ * @Author Unai Pérez Sánchez
+ */
 public class RouteInfoActivity extends AppCompatActivity implements View.OnClickListener, CallbackReceiver {
 
     private TableRow row;
@@ -95,6 +100,10 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         //RouteInfoActivity.gotData = gotData;
     }
 
+    /**
+     * This method is going to be run when a button is pressed
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         Button buttonDisable;
@@ -190,6 +199,10 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    /**
+     * This method is going to be executed when the response of the server goes fine
+     * @param response A response object
+     */
     @Override
     public void onSuccess(Response response) {
         try{
@@ -230,11 +243,18 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    /**
+     * This method is going to be executed when the server cannot resolve the request
+     * @param t A Throwable object
+     */
     @Override
     public void onError(Throwable t) {
         Logger.getAnonymousLogger().severe("Ha habido un problema con la solicitud: "+t.getMessage());
     }
 
+    /**
+     * This method runs when the activity is showing, AKA when onCreate() is executed
+     */
     private void onActivityShowing(){
         Logger.getAnonymousLogger().severe("Ha llegado aqui"+route.getName());
         Logger.getAnonymousLogger().severe("Drawing the map");
@@ -308,6 +328,9 @@ public class RouteInfoActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    /**
+     * This method draws the map in the image view depending on the coordinates
+     */
     private void drawMap () {
         String coords = "";
         for (Coordinate_Route coordinate : route.getCoordinates()) {
